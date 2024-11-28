@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Detalles de Producto{% endblock %}
+
+{% block content %}
+<h2>Detalles del Producto</h2>
+<p><strong>ID:</strong> {{ producto.id }}</p>
+<p><strong>Nombre:</strong> {{ producto.nombre }}</p>
+<p><strong>Precio Público:</strong> {{ producto.precio_publico }}</p>
+<p><strong>Calorías Totales:</strong> {{ producto.calorias_totales }}</p>
+<p><strong>Costo de Producción:</strong> {{ producto.costo_produccion }}</p>
+<p><strong>Rentabilidad:</strong> {{ producto.rentabilidad }}</p>
+<a href="{{ url_for('heladeria.pagina_listar_productos') }}">Volver</a>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Renovar Inventario{% endblock %}
+
+{% block content %}
+<h2>Renovar Inventario</h2>
+<p><strong>Producto:</strong> {{ producto.nombre }}</p>
+<form method="POST">
+    <label for="nueva_cantidad">Nueva Cantidad:</label>
+    <input type="number" name="nueva_cantidad" id="nueva_cantidad" required>
+    <button type="submit">Renovar</button>
+</form>
+<a href="{{ url_for('heladeria.pagina_listar_productos') }}">Volver</a>
+{% endblock %}

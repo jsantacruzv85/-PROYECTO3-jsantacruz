@@ -1,0 +1,458 @@
+{
+	"info": {
+		"_postman_id": "b0196c2d-3784-4407-a3c9-5b9c741fefa9",
+		"name": "Heladeria",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40050496"
+	},
+	"item": [
+		{
+			"name": "LOGIN",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"admin123\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/auth/api_login",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"auth",
+						"api_login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "REGISTER",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJlc19hZG1pbiI6dHJ1ZSwiZXNfZW1wbGVhZG8iOmZhbHNlLCJlc19jbGllbnRlIjpmYWxzZSwiZXhwIjoxNzMyODE1ODMxfQ.Y3mecH0-cFDkyXtyNUfaPnY0Xw-zHsSrrdl9ZcSRRTM",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"nuevocliente\",\r\n  \"password\": \"cliente123\",\r\n  \"es_admin\": false,\r\n  \"es_empleado\": false,\r\n  \"es_cliente\": true\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/auth/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ConsultarProductos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/heladeria/api/productos",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"heladeria",
+						"api",
+						"productos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ALLPRODUCTS",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/heladeria/api/productos",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"heladeria",
+						"api",
+						"productos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PRODUCTS_FROM_ID",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{admin_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/heladeria/api/productos/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"heladeria",
+						"api",
+						"productos",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ALL_PRODUCTS",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/heladeria/api/productos",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"heladeria",
+						"api",
+						"productos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PRODUCTS_FROM_NAME",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{admin_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/heladeria/api/productos/nombre/Helado%20de%20Chocolate",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"heladeria",
+						"api",
+						"productos",
+						"nombre",
+						"Helado%20de%20Chocolate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CALORIES",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{admin_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/heladeria/api/productos/{{producto_id}}/calorias",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"heladeria",
+						"api",
+						"productos",
+						"{{producto_id}}",
+						"calorias"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PROFITABILITY",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{admin_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/heladeria/api/productos/{{producto_id}}/rentabilidad",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"heladeria",
+						"api",
+						"productos",
+						"{{producto_id}}",
+						"rentabilidad"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SELL_PRODUCT",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{admin_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/heladeria/api/productos/vender/{{producto_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"heladeria",
+						"api",
+						"productos",
+						"vender",
+						"{{producto_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SELL_PRODUCT_FROM_ID",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{admin_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/heladeria/api/productos/vender/{{producto_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"heladeria",
+						"api",
+						"productos",
+						"vender",
+						"{{producto_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ALL_INGREDIENTS",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{admin_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/heladeria/api/ingredientes/{{ingrediente_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"heladeria",
+						"api",
+						"ingredientes",
+						"{{ingrediente_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "INGREDIENTS_FROM_ID",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{admin_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/heladeria/api/ingredientes/nombre/Chocolate",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"heladeria",
+						"api",
+						"ingredientes",
+						"nombre",
+						"Chocolate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "INGREDIENTS_FROM_NAME",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{admin_token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/heladeria/api/ingredientes/nombre/Chocolate",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"heladeria",
+						"api",
+						"ingredientes",
+						"nombre",
+						"Chocolate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": " RESUPPLY_INGREDIENT",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "{{admin_token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"cantidad\": 20\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/heladeria/api/ingredientes/reabastecer/{{ingrediente_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"heladeria",
+						"api",
+						"ingredientes",
+						"reabastecer",
+						"{{ingrediente_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "admin_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "empleado_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "cliente_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "producto_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "ingrediente_id",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Iniciar Sesión | Heladería{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow-lg p-4" style="width: 100%; max-width: 400px;">
+        <h2 class="text-center mb-4">Iniciar Sesión</h2>
+        <form action="{{ url_for('auth.login') }}" method="POST">
+            <div class="mb-3">
+                <label for="username" class="form-label">Usuario</label>
+                <input type="text" id="username" name="username" class="form-control" placeholder="Ingresa tu usuario" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Ingresa tu contraseña" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
+        </form>
+        <p class="text-center mt-3 text-muted">¿No tienes cuenta? Contacta al administrador.</p>
+    </div>
+</div>
+{% endblock %}

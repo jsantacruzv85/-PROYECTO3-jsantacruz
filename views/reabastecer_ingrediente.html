@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Reabastecer Ingrediente{% endblock %}
+
+{% block content %}
+<h2>Reabastecer Ingrediente</h2>
+<p><strong>Ingrediente:</strong> {{ ingrediente.nombre }}</p>
+<form method="POST">
+    <label for="cantidad">Cantidad a Reabastecer:</label>
+    <input type="number" name="cantidad" id="cantidad" required>
+    <button type="submit">Reabastecer</button>
+</form>
+<a href="{{ url_for('heladeria.pagina_listar_ingredientes') }}">Volver</a>
+{% endblock %}

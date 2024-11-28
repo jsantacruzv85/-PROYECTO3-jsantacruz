@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h1>Dashboard</h1>
+<p>Bienvenido, {{ current_user.username }}.</p>
+<p>Aquí puedes acceder a las funcionalidades exclusivas.</p>
+<ul>
+    <li><a href="#">Gestión de Inventario</a></li>
+    <li><a href="#">Ventas</a></li>
+    <li><a href="#">Reportes</a></li>
+</ul>
+{% endblock %}

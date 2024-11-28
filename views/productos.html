@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Lista de Productos{% endblock %}
+
+{% block content %}
+<h2>Productos</h2>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for producto in productos %}
+        <tr>
+            <td>{{ producto.id }}</td>
+            <td>{{ producto.nombre }}</td>
+            <td>{{ producto.precio_publico }}</td>
+            <td>
+                <a href="{{ url_for('heladeria.pagina_detalle_producto', id=producto.id) }}">Detalles</a>
+                <a href="{{ url_for('heladeria.pagina_vender_producto', id=producto.id) }}">Vender</a>
+                <a href="{{ url_for('heladeria.pagina_renovar_inventario_producto', id=producto.id) }}">Renovar Inventario</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

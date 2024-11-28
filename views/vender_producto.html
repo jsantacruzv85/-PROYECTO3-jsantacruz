@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Vender Producto{% endblock %}
+
+{% block content %}
+<h2>Vender Producto</h2>
+<p><strong>Producto:</strong> {{ producto.nombre }}</p>
+<p><strong>Precio Público:</strong> {{ producto.precio_publico }}</p>
+<form method="POST">
+    <p>¿Estás seguro de que quieres vender este producto?</p>
+    <button type="submit">Vender</button>
+</form>
+<a href="{{ url_for('heladeria.pagina_listar_productos') }}">Volver</a>
+{% endblock %}

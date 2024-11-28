@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Inicio | Heladería{% endblock %}
+
+{% block content %}
+<div class="text-center">
+    <h2>¡Bienvenido a la Heladería!</h2>
+    <p>Disfruta de nuestros deliciosos helados y consulta nuestro catálogo de productos e ingredientes.</p>
+    {% if current_user.is_authenticated %}
+        <a href="{{ url_for('heladeria.listar_productos') }}" class="btn btn-primary">Ver Productos</a>
+        <a href="{{ url_for('heladeria.listar_ingredientes') }}" class="btn btn-secondary">Ver Ingredientes</a>
+    {% else %}
+        <a href="{{ url_for('auth.login') }}" class="btn btn-primary">Iniciar Sesión</a>
+    {% endif %}
+</div>
+{% endblock %}

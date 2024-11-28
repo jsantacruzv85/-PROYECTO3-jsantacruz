@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Heladería{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Heladería</h1>
+        <nav>
+            <a href="{{ url_for('heladeria.pagina_listar_productos') }}">Productos</a>
+            <a href="{{ url_for('heladeria.pagina_listar_ingredientes') }}">Ingredientes</a>
+            {% if current_user.is_authenticated %}
+                <!-- Vender Producto -->
+                <a href="{{ url_for('heladeria.pagina_vender_producto', id=1) }}">Vender Producto</a>
+
+                <!-- Reabastecer Ingrediente -->
+                <a href="{{ url_for('heladeria.pagina_reabastecer_ingrediente', id=1) }}">Reabastecer Ingrediente</a>
+
+                <!-- Renovar Inventario -->
+                <a href="{{ url_for('heladeria.pagina_renovar_inventario_producto', id=1) }}">Renovar Inventario</a>
+
+                <a href="{{ url_for('auth.logout') }}">Cerrar Sesión</a>
+            {% else %}
+                <a href="{{ url_for('auth.login') }}">Iniciar Sesión</a>
+            {% endif %}
+        </nav>
+    </header>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+    <footer>
+        <p>© 2024 Heladería</p>
+    </footer>
+</body>
+</html>
