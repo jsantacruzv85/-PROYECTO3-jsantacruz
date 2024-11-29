@@ -36,14 +36,12 @@ def token_required(f):
             
             # Usar el usuario para la función decorada
             return f(user, *args, **kwargs)
-        
         except jwt.ExpiredSignatureError:
             return jsonify({'error': 'El token ha expirado'}), 401
         except jwt.InvalidTokenError:
             return jsonify({'error': 'Token inválido'}), 401
 
     return decorated
-
 
 # Decorador para verificar roles específicos
 def check_roles(*roles):
@@ -58,7 +56,6 @@ def check_roles(*roles):
         return decorated_function
     return decorator
 
-
 # Decorador para verificar roles API
 def role_required_api(*roles):
     def decorator(f):
@@ -70,9 +67,7 @@ def role_required_api(*roles):
         return decorated_function
     return decorator
 
-
-
-#Decorador para verificar roles Fronted
+# Decorador para verificar roles en el frontend
 def role_required_html(*roles):
     def decorator(f):
         @wraps(f)
@@ -86,29 +81,30 @@ def role_required_html(*roles):
         return decorated_function
     return decorator
 
-
 # **Ruta de Login (Formulario HTML y API)**
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         # Manejar credenciales desde formulario o JSON
-        username = request.form.get('username') #or request.json.get('username')
-        password = request.form.get('password') #or request.json.get('password')
+        username = request.form.get('username') or request.json.get('username')
+        password = request.form.get('password') or request.json.get('password')
 
         usuario = Usuario.query.filter_by(username=username).first()
         if usuario and usuario.check_password(password):
-            login_user(usuario)  # Inicia sesión con Flask-Login
+            login_user(usuario)
 
-            """if request.is_json:  # Manejar solicitudes API
-                token = jwt.encode(
-                    {'user_id': usuario.id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)},
-                    SECRET_KEY,
-                    algorithm='HS256'
-                )
-                return jsonify({'message': 'Inicio de sesión exitoso', 'token': token})
-            else:  # Manejar solicitudes desde el navegador"""
-            flash('Inicio de sesión exitoso', 'success')
-            return redirect(url_for('heladeria.pagina_listar_productos'))  # Redirigir a productos
+            if request.is_json:
+                token = jwt.encode({
+                    'user_id': usuario.id,
+                    'es_admin': usuario.es_admin,
+                    'es_empleado': usuario.es_empleado,
+                    'es_cliente': usuario.es_cliente,
+                    'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+                }, SECRET_KEY, algorithm='HS256')
+                return jsonify({'message': 'Inicio de sesión exitoso', 'token': token}), 200
+            else:
+                flash('Inicio de sesión exitoso', 'success')
+                return redirect(url_for('heladeria.pagina_listar_productos'))
 
         # Manejar errores de inicio de sesión
         if request.is_json:
@@ -117,7 +113,7 @@ def login():
             flash('Credenciales inválidas', 'error')
             return redirect(url_for('auth.login'))
 
-    return render_template('login.html')  # Renderizar formulario de login para solicitudes GET
+    return render_template('login.html')
 
 # **Ruta de Login para la API (Solo JSON)**
 @auth_bp.route('/api_login', methods=['POST'])
@@ -136,7 +132,6 @@ def api_login():
     if not usuario or not usuario.check_password(password):
         return jsonify({'error': 'Credenciales inválidas'}), 401
 
-    # Generar token con roles
     token = jwt.encode({
         'user_id': usuario.id,
         'es_admin': usuario.es_admin,
@@ -145,19 +140,13 @@ def api_login():
         'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)
     }, SECRET_KEY, algorithm='HS256')
 
-    return jsonify({'token': token, 'message': f'Bienvenido, {username}!'})
-
-
-
+    return jsonify({'token': token, 'message': f'Bienvenido, {username}!'}), 200
 
 # **Registrar nuevos usuarios (solo admins)**
 @auth_bp.route('/register', methods=['POST'])
 @token_required
-@role_required_api('admin')  # Solo accesible para admins
+@role_required_api('admin')
 def register(current_user):
-    """
-    Registro de un nuevo usuario (solo para administradores).
-    """
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
@@ -168,26 +157,19 @@ def register(current_user):
     if Usuario.query.filter_by(username=username).first():
         return jsonify({'error': 'El usuario ya existe'}), 400
 
-    try:
-        # Utilizar un método de hashing compatible con Werkzeug
-        hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
-        nuevo_usuario = Usuario(
-            username=username,
-            password=hashed_password,
-            es_admin=es_admin,
-            es_empleado=es_empleado,
-            es_cliente=es_cliente
-        )
-        db.session.add(nuevo_usuario)
-        db.session.commit()
+    hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
+    nuevo_usuario = Usuario(
+        username=username,
+        password=hashed_password,
+        es_admin=es_admin,
+        es_empleado=es_empleado,
+        es_cliente=es_cliente
+    )
+    db.session.add(nuevo_usuario)
+    db.session.commit()
+    return jsonify({'message': f'Usuario {username} creado exitosamente'}), 201
 
-        return jsonify({'message': f'Usuario {username} creado exitosamente'}), 201
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({'error': f'Ocurrió un error al registrar el usuario: {str(e)}'}), 500
-
-
-# **Ruta protegida de ejemplo (para usuarios logueados con Flask-Login)**
+# **Ruta protegida de ejemplo**
 @auth_bp.route('/protegido', methods=['GET'])
 @login_required
 def protegido():
@@ -196,7 +178,7 @@ def protegido():
 # **Ruta protegida solo para administradores**
 @auth_bp.route('/solo-admin', methods=['GET'])
 @login_required
-@role_required_api('admin')  # Verifica que el usuario sea admin
+@role_required_api('admin')
 def solo_admin(current_user):
     return jsonify({'message': f'Hola, {current_user.username}. Este es un endpoint solo para administradores.'})
 
@@ -206,4 +188,4 @@ def solo_admin(current_user):
 def logout():
     logout_user()
     flash('Sesión cerrada exitosamente', 'success')
-    return redirect(url_for('auth.login'))  # Redirigir a la página de login
+    return redirect(url_for('auth.login'))

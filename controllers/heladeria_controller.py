@@ -31,7 +31,23 @@ def pagina_detalle_producto(id):
     if not producto:
         flash('Producto no encontrado.', 'error')
         return redirect(url_for('heladeria.pagina_listar_productos'))
-    return render_template('detalle_producto.html', producto=producto)
+
+    # Filtrar campos sensibles según el rol del usuario
+    detalles_producto = {
+        'id': producto.id,
+        'nombre': producto.nombre,
+        'precio_publico': producto.precio_publico,
+        'calorias_totales': producto.calorias_totales
+    }
+
+    if current_user.is_authenticated and current_user.es_admin:
+        detalles_producto.update({
+            'costo_produccion': producto.costo_produccion,
+            'rentabilidad': producto.rentabilidad
+        })
+
+    return render_template('detalle_producto.html', producto=detalles_producto)
+
 
 # Página para listar ingredientes
 @heladeria_bp.route('/ingredientes', methods=['GET'])
@@ -140,14 +156,28 @@ def listar_productos():
     Acceso: Público (no requiere autenticación).
     """
     productos = Producto.query.all()
-    return jsonify([{
-        'id': p.id,
-        'nombre': p.nombre,
-        'precio_publico': p.precio_publico,
-        'calorias_totales': p.calorias_totales,
-        'costo_produccion': p.costo_produccion,
-        'rentabilidad': p.rentabilidad
-    } for p in productos])
+
+    productos_data = []
+    for producto in productos:
+        # Datos básicos visibles para todos
+        producto_info = {
+            'id': producto.id,
+            'nombre': producto.nombre,
+            'precio_publico': producto.precio_publico,
+            'calorias_totales': producto.calorias_totales
+        }
+
+        # Solo el administrador puede ver el costo y la rentabilidad
+        if current_user.is_authenticated and current_user.es_admin:
+            producto_info.update({
+                'costo_produccion': producto.costo_produccion,
+                'rentabilidad': producto.rentabilidad
+            })
+
+        productos_data.append(producto_info)
+
+    return jsonify(productos_data), 200
+
 
 # Consultar un producto por ID (Clientes, empleados, administradores)
 @heladeria_bp.route('/api/productos/<int:id>', methods=['GET'])
@@ -262,7 +292,7 @@ def consultar_rentabilidad(current_user, id):
         return jsonify({'error': 'Producto no encontrado'}), 404
     return jsonify({'rentabilidad': producto.rentabilidad})
 
-# Consultar el costo de producción de un producto (Empleados y administradores)
+# Consultar el costo de producción de un producto (administradores)
 @heladeria_bp.route('/api/productos/<int:id>/costo_produccion', methods=['GET'])
 @token_required
 @role_required_api('admin')

@@ -8,7 +8,19 @@
 <p><strong>Nombre:</strong> {{ producto.nombre }}</p>
 <p><strong>Precio Público:</strong> {{ producto.precio_publico }}</p>
 <p><strong>Calorías Totales:</strong> {{ producto.calorias_totales }}</p>
-<p><strong>Costo de Producción:</strong> {{ producto.costo_produccion }}</p>
-<p><strong>Rentabilidad:</strong> {{ producto.rentabilidad }}</p>
+
+{% if current_user.is_authenticated %}
+    {% if current_user.es_admin %}
+        <p><strong>Costo de Producción:</strong> {{ producto.costo_produccion }}</p>
+        <p><strong>Rentabilidad:</strong> {{ producto.rentabilidad }}</p>
+    {% elif current_user.es_empleado %}
+        <p><em>No tienes permisos para ver datos sensibles como costo de producción y rentabilidad.</em></p>
+    {% else %}
+        <p><em>No tienes permisos para ver más detalles de este producto.</em></p>
+    {% endif %}
+{% else %}
+    <p><em>Inicia sesión para ver más detalles del producto.</em></p>
+{% endif %}
+
 <a href="{{ url_for('heladeria.pagina_listar_productos') }}">Volver</a>
 {% endblock %}
